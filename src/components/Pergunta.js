@@ -35,7 +35,7 @@ export default function Pergunta(props) {
       ) : (
         <PerguntaFechada>
           <NomePergunta concluido={concluido} estilo={estilo}>Pergunta {id}</NomePergunta>
-          {estilo === "cinza" && <Botao src={play} alt="" onClick={abrirPergunta} cursor={true}/>}
+          {estilo === "cinza" && <Botao src={play} alt="" onClick={abrirPergunta} temCursor={true}/>}
           {estilo === "verde" && <Botao src={certo} alt="" />}
           {estilo === "amarelo" && <Botao src={quase} alt="" />}
           {estilo === "vermelho" && <Botao src={erro} alt="" />}
@@ -87,7 +87,7 @@ const NomePergunta = styled.p`
 `;
 
 const Botao = styled.img`
-${(props) => props.cursor && `
+${(props) => props.temCursor && `
     cursor: pointer;
   `}
 `;

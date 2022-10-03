@@ -2,6 +2,7 @@ import styled from "styled-components";
 import logo from "./assets/img/logo.png";
 import DECK from "./deck";
 import Pergunta from "./components/Pergunta";
+import GlobalStyle from "./global";
 import { useState } from "react";
 
 export default function App() {
@@ -19,38 +20,41 @@ export default function App() {
   }
 
   return (
-    <ScreenContainer>
-      <LogoContainer>
-        <img src={logo} alt="" />
-        <h1>ZapRecall</h1>
-      </LogoContainer>
+    <>
+      <GlobalStyle />
+      <ScreenContainer>
+        <LogoContainer>
+          <img src={logo} alt="" />
+          <h1>ZapRecall</h1>
+        </LogoContainer>
 
-      {DECK.map((item) => {
-        const idFinalizado = idFinalizados.find(obj => obj.id === item.id);
+        {DECK.map((item) => {
+          const idFinalizado = idFinalizados.find(obj => obj.id === item.id);
 
-        return (
-          <Pergunta
-            key={item.id}
-            deck={item}
-            idAberto={idAberto}
-            selecionarPergunta={setIdAberto}
-            virado={virado}
-            virarPergunta={setVirado}
-            concluido={idFinalizado ? true : false}
-            estilo={idFinalizado ? idFinalizado.cor : "cinza"}
-          />
-      )})}
+          return (
+            <Pergunta
+              key={item.id}
+              deck={item}
+              idAberto={idAberto}
+              selecionarPergunta={setIdAberto}
+              virado={virado}
+              virarPergunta={setVirado}
+              concluido={idFinalizado ? true : false}
+              estilo={idFinalizado ? idFinalizado.cor : "cinza"}
+            />
+        )})}
 
-      <FooterConcluidos>
-        <ContainerBotoes>
-          <Botao color="#FF3030" onClick={() => concluirPergunta("vermelho")}>Não lembrei</Botao>
-          <Botao color="#FF922E" onClick={() => concluirPergunta("amarelo")}>Quase Lembrei</Botao>
-          <Botao color="#2FBE34" onClick={() => concluirPergunta("verde")}>Zap!</Botao>
-        </ContainerBotoes>
+        <FooterConcluidos>
+          <ContainerBotoes>
+            <Botao color="#FF3030" onClick={() => concluirPergunta("vermelho")}>Não lembrei</Botao>
+            <Botao color="#FF922E" onClick={() => concluirPergunta("amarelo")}>Quase Lembrei</Botao>
+            <Botao color="#2FBE34" onClick={() => concluirPergunta("verde")}>Zap!</Botao>
+          </ContainerBotoes>
 
-        <p>{qntdFinalizados}/8 CONCLUÍDOS</p>
-      </FooterConcluidos>
-    </ScreenContainer>
+          <p>{qntdFinalizados}/8 CONCLUÍDOS</p>
+        </FooterConcluidos>
+      </ScreenContainer>
+    </>
   );
 }
 
@@ -105,7 +109,8 @@ const FooterConcluidos = styled.div`
 
 const ContainerBotoes = styled.div`
   display: flex;
-  width: 80%;
+  width: 100%;
+  max-width: 300px;
   justify-content: space-around;
   margin: 20px;
 `;
