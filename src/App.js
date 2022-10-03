@@ -1,25 +1,54 @@
-import styled from "styled-compenents";
-import { useState } from "react";
-import DECK from "./deck"
+import styled from "styled-components";
+import logo from "./assets/img/logo.png";
+import DECK from "./deck";
 import Pergunta from "./components/Pergunta";
+import { useState } from "react";
 
 export default function App() {
-  const {deck} = DECK;
+  const [idAberto, setIdAberto] = useState(0);
+  const [virado, setVirado] = useState(false);
+  const [idFinalizados, setIdFinalizados] = useState([]);
+  const qntdFinalizados = idFinalizados.length;
+
+  function concluirPergunta(corBotao){
+    if(virado === true){
+      setIdAberto(0);
+      const novoFinalizado = {id: idAberto, cor: corBotao};
+      setIdFinalizados([...idFinalizados, novoFinalizado]);
+    }
+  }
+
   return (
     <ScreenContainer>
-      <LogoCcontainer>
-        <img src="assets/img/logo.png" alt="" />
+      <LogoContainer>
+        <img src={logo} alt="" />
         <h1>ZapRecall</h1>
-      </LogoCcontainer>
+      </LogoContainer>
 
-      {deck.map((item) => <Pergunta key={item.id} deck={item} />)}
+      {DECK.map((item) => {
+        const idFinalizado = idFinalizados.find(obj => obj.id === item.id);
+
+        return (
+          <Pergunta
+            key={item.id}
+            deck={item}
+            idAberto={idAberto}
+            selecionarPergunta={setIdAberto}
+            virado={virado}
+            virarPergunta={setVirado}
+            concluido={idFinalizado ? true : false}
+            estilo={idFinalizado ? idFinalizado.cor : "cinza"}
+          />
+      )})}
 
       <FooterConcluidos>
         <ContainerBotoes>
-          <button></button>
-          <button></button>
-          <button></button>
+          <Botao color="#FF3030" onClick={() => concluirPergunta("vermelho")}>Não lembrei</Botao>
+          <Botao color="#FF922E" onClick={() => concluirPergunta("amarelo")}>Quase Lembrei</Botao>
+          <Botao color="#2FBE34" onClick={() => concluirPergunta("verde")}>Zap!</Botao>
         </ContainerBotoes>
+
+        <p>{qntdFinalizados}/8 CONCLUÍDOS</p>
       </FooterConcluidos>
     </ScreenContainer>
   );
@@ -37,7 +66,7 @@ const ScreenContainer = styled.div`
   padding-bottom: 200px;
 `;
 
-const LogoCcontainer = styled.div`
+const LogoContainer = styled.div`
   display: flex;
   align-items: center;
   margin: 40px 0 20px 0;
@@ -60,14 +89,14 @@ const LogoCcontainer = styled.div`
 const FooterConcluidos = styled.div`
   width: 100%;
   min-height: 50px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   position: fixed;
   bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: 'Recursive';
+  font-family: "Recursive";
   font-weight: 400;
   font-size: 18px;
   color: #333333;
@@ -77,6 +106,26 @@ const FooterConcluidos = styled.div`
 const ContainerBotoes = styled.div`
   display: flex;
   width: 80%;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 20px;
+`;
+
+const Botao = styled.button`
+  cursor: pointer;
+  width: 90px;
+  font-family: "Recursive";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ffffff;
+  background: blue;
+  border-radius: 5px;
+  border: 1px solid blue;
+  padding: 5px;
+  background-color: ${(props) => props.color};
 `;
